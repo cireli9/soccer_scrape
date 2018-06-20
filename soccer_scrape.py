@@ -48,7 +48,7 @@ def scrape_premier():
 
     #filter to only 2017-2018 and get html
     driver.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div[1]/section/div[2]/div[2]').click()
-    driver.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div[1]/section/div[2]/ul/li[2]').click()
+    driver.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div[1]/section/div[2]/ul/li[3]').click()
 
     time.sleep(1)
 
@@ -82,10 +82,11 @@ def scrape_premier():
         link = link + matchElements[i]["data-comp-match-item"]
         matchLinks.append(link)
 
+    assert(len(matchLinks) == 380)
     print("# matches = " + str(len(matchLinks)))
 
     #iterate through match links and populate data
-    for n in range(201, len(matchElements)):
+    for n in range(350, len(matchElements)):
 
         #create new driver for each
         driver = webdriver.Chrome(chrome_options = chrome_options)
@@ -193,7 +194,7 @@ def scrape_premier():
             'Fouls': Fouls
             })
 
-            df.to_csv('dump' + str(n) + '.csv')
+            df.to_csv('dump16-17' + str(n) + '.csv')
 
         print("completed page " + str(matchLinks[n]) + '  ' + str(n))
 
@@ -220,10 +221,16 @@ def scrape_premier():
         })
 
 
-    writer = pd.ExcelWriter('soccer_data.xlsx')
+    writer = pd.ExcelWriter('soccer_data16-17.xlsx')
     df.to_excel(writer, 'Sheet1')
     writer.save()
 
     print("done")
 
-scrape_premier()
+
+#handles any internet speed errors or random miscounts
+while True:
+    try:
+        scrape_premier()
+    except:
+        print("Error occured: trying again")
