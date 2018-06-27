@@ -86,7 +86,7 @@ def scrape_premier():
     print("# matches = " + str(len(matchLinks)))
 
     #iterate through match links and populate data
-    for n in range(350, len(matchElements)):
+    for n in range(301, len(matchElements)):
 
         #create new driver for each
         driver = webdriver.Chrome(chrome_options = chrome_options)
@@ -232,5 +232,6 @@ def scrape_premier():
 while True:
     try:
         scrape_premier()
+        break
     except:
         print("Error occured: trying again")
